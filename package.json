@@ -1,0 +1,60 @@
+{
+  "name": "golova",
+  "productName": "ГОЛОВА",
+  "version": "0.1.4",
+  "description": "Avatar Studio — череп-аватар на символьной сетке (Electron + Canvas 2D)",
+  "main": "electron/main.js",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "start": "electron .",
+    "dist": "npm run build && electron-builder --win",
+    "dist:portable": "npm run build && electron-builder --win portable"
+  },
+  "build": {
+    "appId": "ru.mediavolna.golova",
+    "productName": "ГОЛОВА",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**",
+      "electron/**",
+      "head_map.txt"
+    ],
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "artifactName": "Golova-Setup-${version}.${ext}"
+    },
+    "portable": {
+      "artifactName": "Golova-${version}-portable.${ext}"
+    }
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.0",
+    "electron": "^22.3.0",
+    "electron-builder": "^24.13.0",
+    "typescript": "^5.5.0",
+    "vite": "^5.4.0"
+  },
+  "dependencies": {
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0"
+  },
+  "allowScripts": {
+    "electron@22.3.27": true,
+    "esbuild@0.21.5": true
+  }
+}

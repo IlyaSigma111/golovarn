@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ГОЛОВА — символьный аватар для проектора и мониторов</title>
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --bg-2: #0f120f;
+    --panel: #121612;
+    --border: #1f2b1f;
+    --green: #00ff00;
+    --green-dim: #00b300;
+    --green-faint: #0a3a0a;
+    --fg: #b7ffb7;
+    --fg-muted: #4f8f4f;
+    --mono: Consolas, 'Courier New', monospace;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: radial-gradient(1200px 500px at 20% -10%, rgba(0,255,0,.07), transparent 60%), var(--bg);
+    color: var(--fg);
+    font-family: var(--mono);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  a { color: var(--green); text-decoration: none; }
+  a:hover { text-shadow: 0 0 10px rgba(0,255,0,.6); }
+
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 28px; }
+
+  /* header */
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 22px 0;
+  }
+  .logo {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--green);
+    letter-spacing: 1px;
+  }
+  .logo .cursor { animation: blink 1s steps(1) infinite; }
+  .logo .sub { color: var(--fg-muted); font-size: 12px; font-weight: 400; }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  nav { display: flex; gap: 22px; margin-top: 16px; font-size: 13px; }
+  nav a { color: var(--fg-muted); }
+  nav a:hover { color: var(--green); }
+
+  /* hero */
+  .hero { padding: 60px 0 40px; }
+  .hero h1 {
+    margin: 0 0 14px;
+    font-size: 42px;
+    line-height: 1.1;
+    color: var(--green);
+    text-shadow: 0 0 24px rgba(0,255,0,.35);
+  }
+  .hero h1 span { color: var(--fg); font-size: 30px; }
+  .hero p { max-width: 620px; color: var(--fg-muted); margin: 0 0 28px; }
+  .hero .grid { display: grid; grid-template-columns: 1fr 1.35fr; gap: 40px; align-items: center; }
+  @media (max-width: 860px) { .hero .grid { grid-template-columns: 1fr; } .hero h1 { font-size: 32px; } }
+
+  .buttons { display: flex; flex-wrap: wrap; gap: 14px; }
+  .btn {
+    font-family: var(--mono);
+    font-size: 15px;
+    padding: 13px 24px;
+    border: 1px solid var(--green-dim);
+    border-radius: 4px;
+    background: transparent;
+    color: var(--green);
+    cursor: pointer;
+    transition: background .15s, box-shadow .15s, transform .05s;
+  }
+  .btn:hover { background: var(--green-faint); box-shadow: 0 0 14px rgba(0,255,0,.25); }
+  .btn:active { transform: scale(.97); }
+  .btn-primary { background: var(--green); color: #000; font-weight: 700; border-color: var(--green); }
+  .btn-primary:hover { background: #33ff33; box-shadow: 0 0 18px rgba(0,255,0,.45); }
+  .btn-accent { border-color: #00ffaa; color: #00ffaa; }
+  .btn-accent:hover { background: rgba(0,255,170,.1); box-shadow: 0 0 14px rgba(0,255,170,.3); }
+  .hint { font-size: 12px; color: var(--fg-muted); margin-top: 12px; width: 100%; }
+  .hint-em { color: var(--green); }
+
+  /* live head demo */
+  .demo {
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 18px;
+    box-shadow: inset 0 0 60px rgba(0,255,0,.04);
+  }
+  .demo .bar { display: flex; justify-content: space-between; font-size: 11px; color: var(--fg-muted); margin-bottom: 10px; }
+  .demo .bar .dot { color: var(--green); }
+  .demo pre {
+    margin: 0;
+    font-family: var(--mono);
+    font-size: 12px;
+    line-height: 1.25;
+    color: var(--green);
+    text-shadow: 0 0 6px rgba(0,255,0,.55);
+    white-space: pre;
+    overflow: hidden;
+  }
+
+  /* features */
+  .features { padding: 40px 0; }
+  .features h2, .how h2 { font-size: 20px; color: var(--green); text-transform: uppercase; letter-spacing: 2px; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; margin-top: 22px; }
+  .card { background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 20px; }
+  .card h3 { margin: 0 0 8px; font-size: 15px; color: var(--green); }
+  .card p { margin: 0; font-size: 13px; color: var(--fg-muted); }
+  .card .key { display: inline-block; margin-top: 10px; padding: 2px 8px; border: 1px solid var(--border); border-radius: 3px; font-size: 11px; color: var(--fg); background: var(--bg); }
+
+  /* how */
+  .how { padding: 30px 0 60px; }
+  .how ol { color: var(--fg-muted); max-width: 720px; padding-left: 22px; }
+  .how li { margin-bottom: 10px; }
+  .how li strong { color: var(--fg); }
+
+  /* footer */
+  footer { border-top: 1px solid var(--border); padding: 22px 0 40px; color: var(--fg-muted); font-size: 12px; }
+  footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="logo">ГОЛОВА<span class="cursor">_</span> <span class="sub">череп-аватар на символьной сетке · Electron</span></div>
+    <nav>
+      <a href="#features">Возможности</a>
+      <a href="#how">Как работает тест мониторов</a>
+      <a href="#download">Скачать</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap grid">
+    <div>
+      <h1>Символьная голова<br><span>для проектора и мониторов</span></h1>
+      <p>
+        Окно рендера открывается отдельно и адаптируется под разрешение любого дисплея.
+        Кнопка «Тест окон на разных мониторах» открывает рендер на каждом подключённом экране —
+        и видно сразу, плывёт ли голова при смене разрешения.
+      </p>
+      <div class="buttons" id="download">
+        <div style="width: 100%; font-size: 13px; color: var(--fg-muted); margin-bottom: -4px;">ГОЛОВА v0.1.2 (Рендерер):</div>
+        <a class="btn btn-primary" href="downloads/Golova-Setup-0.1.2.exe" download>⬇ Установщик</a>
+        <a class="btn btn-accent" href="downloads/Golova-0.1.2-portable.exe" download>⬇ Портативная</a>
+        
+        <div style="width: 100%; font-size: 13px; color: var(--fg-muted); margin-top: 14px; margin-bottom: -4px;">Головастик v0.1.0 (Редактор):</div>
+        <a class="btn btn-primary" href="downloads/Golovastik-Setup-0.1.0.exe" download>⬇ Установщик</a>
+        <a class="btn btn-accent" href="downloads/Golovastik-0.1.0-portable.exe" download>⬇ Портативная</a>
+        
+        <div style="width: 100%; font-size: 13px; color: #ff9800; margin-top: 10px; margin-bottom: -4px;">ГОЛОВА v0.1.4-test (Тестовая: фикс моргания и новая анимация):</div>
+        <a class="btn btn-primary" style="background-color: #e65100; border-color: #e65100; box-shadow: none;" href="downloads/Golova-Setup-0.1.4.exe" download>⬇ Установщик</a>
+        <a class="btn btn-accent" style="color: #ffb74d;" href="downloads/Golova-0.1.4-portable.exe" download>⬇ Портативная</a>
+        
+        <div class="hint" style="margin-top: 14px;">Скачивание напрямую с сайта · Windows</div>
+      </div>
+    </div>
+    <div class="demo">
+      <div class="bar"><span class="dot">● живой рендер</span><span>сетка 100×100 · аватар из Головастика</span></div>
+      <pre id="head"></pre>
+    </div>
+  </div>
+</section>
+
+<section class="features" id="features">
+  <div class="wrap">
+    <h2>Возможности</h2>
+    <div class="cards">
+      <div class="card">
+        <h3>Вывод рендера</h3>
+        <p>Кнопка открывает второе окно во весь экран текущего дисплея — голова рисуется отдельно от панели управления.</p>
+        <span class="key">▶ Вывод рендера</span>
+      </div>
+      <div class="card">
+        <h3>Тест на всех мониторах</h3>
+        <p>Одна кнопка открывает окно рендера на каждом подключённом дисплее. Сверка разрешений и позиций — сразу видно адаптивность.</p>
+        <span class="key">🖥 Тест окон на разных мониторах</span>
+      </div>
+      <div class="card">
+        <h3>Адаптивность</h3>
+        <p>Сетка масштабируется пропорционально каждому кадру и всегда центрируется. Голова не плывёт ни на 800×600, ни на 4K.</p>
+        <span class="key">ResizeObserver + devicePixelRatio</span>
+      </div>
+      <div class="card">
+        <h3>Символьная сетка 80×44</h3>
+        <p>Маска головы сгенерирована из референса. Глаза, нос и рот — пустые зоны, которые оживают анимациями.</p>
+        <span class="key">head_map.txt</span>
+      </div>
+      <div class="card">
+        <h3>Размер головы</h3>
+        <p>Ползунок «Размер головы» масштабирует символьную сетку от 0.4× до 2.4× прямо в предпросмотре — значение сохраняется в аватаре.</p>
+        <span class="key">head_scale</span>
+      </div>
+      <div class="card">
+        <h3>Интенсивность эффектов</h3>
+        <p>Отдельные регуляторы для каждого эффекта: помехи, эрозия, тревога, терминал, матрица, рассыпание, визуализатор, символы кода и волны — от 0% до 100%.</p>
+        <span class="key">9 ползунков</span>
+      </div>
+      <div class="card">
+        <h3>Модели из «Головастик))))»</h3>
+        <p>Дополнение: загрузка JSON-моделек из фотошопа модельок — вместо параметрического черепа рисуется ваша сетка (цифры, брайль, полублоки) с детектом глаз и говорящим ртом.</p>
+        <span class="key">{rows, cols, grid_char, is_eye}</span>
+      </div>
+      <div class="card">
+        <h3>Чистый вывод</h3>
+        <p>Окно рендера без HUD и подсказок — голова занимает всю площадь экрана. Управление только клавишами: F — полный экран, Esc — закрыть.</p>
+        <span class="key">без интерфейса</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="how" id="how">
+  <div class="wrap">
+    <h2>Как работает тест мониторов</h2>
+    <ol>
+      <li>Запустите приложение — откроется панель управления с таблицей всех дисплеев (разрешение, workArea, масштаб).</li>
+      <li>Нажмите <strong>«🖥 Тест окон на разных мониторах»</strong> — на каждом экране появится окно с головой.</li>
+      <li>Окно рендера чистое, без HUD — голова рисуется на всю площадь. <strong>F</strong> — полный экран, <strong>Esc</strong> — закрыть.</li>
+      <li>Если голова остаётся по центру и сохраняет пропорции на всех экранах — адаптивность работает.</li>
+    </ol>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>ГОЛОВА · символьный аватар · сетка 80×44</span>
+    <span>Windows · Electron + Canvas 2D · TypeScript</span>
+  </div>
+</footer>
+</body>
+</html>
